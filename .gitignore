@@ -1,0 +1,17 @@
+target/
+project/target/
+project/project/
+.bsp/
+.idea/
+.metals/
+.bloop/
+.vscode/
+*.class
+__pycache__/
+.pytest_cache/
+.venv/
+/tmp/
+out/
+derby.log
+metastore_db/
+spark-warehouse/

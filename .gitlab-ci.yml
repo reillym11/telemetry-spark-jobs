@@ -1,0 +1,28 @@
+stages:
+  - test
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+sbt-test:
+  stage: test
+  image: sbtscala/scala-sbt:eclipse-temurin-17.0.15_6_1.10.11_2.12.20
+  variables:
+    COURSIER_CACHE: "$CI_PROJECT_DIR/.cache/coursier"
+    SBT_OPTS: "-Dsbt.global.base=$CI_PROJECT_DIR/.cache/sbt -Dsbt.boot.directory=$CI_PROJECT_DIR/.cache/sbt/boot -Dsbt.ivy.home=$CI_PROJECT_DIR/.cache/ivy2"
+  cache:
+    key: sbt-$CI_COMMIT_REF_SLUG
+    paths:
+      - .cache/
+  script:
+    - sbt -batch test
+
+pytest:
+  stage: test
+  image: python:3.11
+  script:
+    - cd downstream-consumers
+    - python -m pip install -r requirements.txt
+    - python -m pytest -q
