@@ -41,7 +41,7 @@ class DiagnosticsDtcRouterSpec extends AnyFunSuite with PipelineBehaviors {
 
   test("coordinates are coarsened to 2 decimals") {
     val out = route(Seq(line(id(9), 3, "active", "37.12500", "-122.12500"), line(id(10), 3, "active", "29.99512", "-95.37499")))
-    assert(out.exists(o => o.contains("\"lat\":37.13") && o.contains("\"lon\":-122.13")))
+    assert(out.exists(o => o.contains("\"lat\":37.12") && o.contains("\"lon\":-122.12")))
     assert(out.exists(o => o.contains("\"lat\":30.0") && o.contains("\"lon\":-95.37")))
     out.foreach(o => assert(Contracts.errors(DiagnosticsDtcRouter.OutputTopic, o).isEmpty, o))
   }

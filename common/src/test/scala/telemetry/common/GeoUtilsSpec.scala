@@ -12,11 +12,9 @@ class GeoUtilsSpec extends AnyFunSuite {
     assert(c(-122.04321) == -122.04)
   }
 
-  test("exact .xx5 ties go away from zero") {
-    assert(c(37.125) == 37.13)
-    assert(c(37.135) == 37.14)
-    assert(c(-122.125) == -122.13)
-    assert(c(29.995) == 30.0)
+  test("exact .xx5 ties round half to even, for lat and lon") {
+    for ((in, out) <- Seq(37.125 -> 37.12, 37.135 -> 37.14, -122.125 -> -122.12, 29.995 -> 30.00))
+      assert(GeoUtils.coarsen(in, in) == ((out, out)), in)
   }
 
   test("lat and lon are independent") {
