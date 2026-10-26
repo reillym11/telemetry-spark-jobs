@@ -7,5 +7,5 @@ object GeoUtils {
     (to2(lat), to2(lon))
 
   private def to2(value: Double): Double =
-    BigDecimal(value.toString).setScale(2, RoundingMode.HALF_UP).toDouble
+    BigDecimal(value.toString).setScale(2, RoundingMode.HALF_EVEN).toDouble
 }
