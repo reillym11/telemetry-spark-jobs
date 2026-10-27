@@ -2,7 +2,7 @@
 # Usage: scripts/sync-contracts.sh <data-contracts commit sha>
 set -euo pipefail
 sha="${1:?usage: $0 <data-contracts commit sha>}"
-repo="${DATA_CONTRACTS_REPO:-https://gitlab.com/congition-demo-group/data-contracts.git}"
+repo="${DATA_CONTRACTS_REPO:-https://github.com/reillym11/data-contracts.git}"
 root="$(cd "$(dirname "$0")/.." && pwd)"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT

@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sbt-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: sbt
+      - uses: sbt/setup-sbt@v1
+        with:
+          sbt-runner-version: 1.10.11
+      - run: sbt -batch test
+
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: downstream-consumers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: downstream-consumers/requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -q
